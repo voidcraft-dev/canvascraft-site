@@ -159,7 +159,7 @@
     /* ──────────────────────────────────────────────────
        SCREENSHOT
     ────────────────────────────────────────────────── */
-    .shot-sec{padding:0 32px 80px;position:relative;z-index:1;background:linear-gradient(to bottom,transparent,rgba(5,11,24,.88) 10%,rgba(5,11,24,.92) 90%,transparent);}
+    .shot-sec{padding:0 32px 80px;position:relative;z-index:1;background:linear-gradient(to bottom,transparent,rgba(5,11,24,.94) 8%,rgba(5,11,24,.97) 92%,transparent);}
     .shot-frame{max-width:980px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 40px 120px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04) inset;position:relative;}
     .shot-frame::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,.8),rgba(139,92,246,.5),transparent);z-index:1;}
     .shot-frame::after{content:'';position:absolute;bottom:-60px;left:10%;right:10%;height:60px;background:radial-gradient(ellipse,rgba(59,130,246,.14),transparent 70%);filter:blur(16px);pointer-events:none;}
@@ -184,8 +184,8 @@
     /* ──────────────────────────────────────────────────
        SECTIONS
     ────────────────────────────────────────────────── */
-    .sec{padding:96px 32px;position:relative;z-index:1;background:linear-gradient(to bottom,transparent,rgba(5,11,24,.88) 5%,rgba(5,11,24,.92) 95%,transparent);}
-    .sec-alt{padding:96px 32px;position:relative;z-index:1;background:rgba(5,11,24,.9);}
+    .sec{padding:96px 32px;position:relative;z-index:1;background:linear-gradient(to bottom,transparent,rgba(5,11,24,.94) 5%,rgba(5,11,24,.97) 95%,transparent);}
+    .sec-alt{padding:96px 32px;position:relative;z-index:1;background:rgba(5,11,24,.96);}
     .hd{text-align:center;margin-bottom:60px;}
     .tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue-l);background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);padding:3px 12px;border-radius:99px;margin-bottom:14px;}
     .hd h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.75rem);font-weight:400;letter-spacing:-0.5px;margin-bottom:12px;}
@@ -460,6 +460,15 @@
     @media(prefers-reduced-motion:reduce){
       *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important;}
     }
+
+    /* ──────────────────────────────────────────────────
+       CUSTOM SCROLLBAR
+    ────────────────────────────────────────────────── */
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(59,130,246,.28);border-radius:99px;}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(96,165,250,.55);}
+    *{scrollbar-width:thin;scrollbar-color:rgba(59,130,246,.28) transparent;}
   </style>
 </head>
 <body>
@@ -1022,12 +1031,19 @@ async function initFluid(){
       BACK_COLOR: {r:0,g:0,b:0},
     });
 
-    // Seed initial splats on load
-    [[0.2,0.55,900,-500],[0.5,0.4,-700,600],[0.8,0.65,600,400],
-     [0.35,0.3,-500,-700],[0.65,0.5,400,800],[0.15,0.75,800,-300]
+    // Seed initial splats — cool palette (blue/purple/cyan), avoid warm pinks
+    function coolColor(){
+      var t = Math.random();
+      if(t < 0.4)  return {r:0.05+Math.random()*.15, g:0.15+Math.random()*.25, b:0.55+Math.random()*.35}; // blue
+      if(t < 0.75) return {r:0.2+Math.random()*.2,   g:0.05+Math.random()*.1,  b:0.45+Math.random()*.35}; // purple
+                   return {r:0.0+Math.random()*.08,   g:0.35+Math.random()*.35, b:0.55+Math.random()*.35}; // cyan
+    }
+    // x,y,vx,vy — kept away from top-right viewport corner (was 0.8,0.65)
+    [[0.18,0.55,900,-500],[0.5,0.42,-700,600],[0.72,0.80,500,350],
+     [0.35,0.28,-500,-700],[0.62,0.52,400,800],[0.14,0.72,800,-300]
     ].forEach(function(s,i){
       setTimeout(function(){
-        sim.splat(s[0],s[1],s[2],s[3],{r:Math.random()*.7+.1,g:Math.random()*.6+.1,b:Math.random()*.7+.2});
+        sim.splat(s[0],s[1],s[2],s[3], coolColor());
       }, i * 180);
     });
 
