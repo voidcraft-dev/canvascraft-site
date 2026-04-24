@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TermCanvas — Canvas-based Terminal Workspace</title>
   <meta name="description" content="Manage multiple terminals on an infinite canvas. Drag, resize, group, and control from your phone. $19 one-time purchase.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TermCanvas — Canvas-based Terminal Workspace">
+  <meta property="og:description" content="Drag, resize, and group terminal sessions on an infinite canvas. Monitor everything from your phone. $19 one-time purchase.">
+  <meta property="og:image" content="img/hero.png">
+  <meta property="og:url" content="https://termcanvas.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TermCanvas — Canvas-based Terminal Workspace">
+  <meta name="twitter:description" content="Drag, resize, and group terminal sessions on an infinite canvas. $19 one-time.">
+  <meta name="twitter:image" content="img/hero.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -419,12 +428,34 @@
       .tp.on{grid-template-columns:1fr;}
       .sg{grid-template-columns:repeat(2,1fr);}
     }
+    /* ──────────────────────────────────────────────────
+       HAMBURGER MENU
+    ────────────────────────────────────────────────── */
+    .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:transparent;z-index:600;position:relative;}
+    .ham span{display:block;width:22px;height:2px;border-radius:2px;background:var(--text2);transition:all .28s var(--ease);}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mob-nav{
+      display:none;position:fixed;inset:0;top:62px;z-index:490;
+      flex-direction:column;align-items:center;justify-content:center;gap:28px;
+      background:rgba(5,11,24,.97);backdrop-filter:blur(20px);
+      opacity:0;transform:translateY(-8px);
+      transition:opacity .28s var(--ease),transform .28s var(--ease);
+      pointer-events:none;
+    }
+    .mob-nav.open{opacity:1;transform:translateY(0);pointer-events:all;}
+    .mob-nav a{font-size:20px;font-weight:600;color:var(--text2);transition:color .18s;}
+    .mob-nav a:hover{color:var(--text);}
+    .mob-nav .nbuy{font-size:16px;padding:12px 36px;}
+
     @media(max-width:640px){
-      .nl{display:none;}.hero{padding:0 20px;}
+      .nl{display:none;}.ham{display:flex;}.hero{padding:0 20px;}
       h1.ht{letter-spacing:-1.5px;}.fg{grid-template-columns:1fr;}
       .fw{flex-direction:column;gap:16px;text-align:center;}
       .flinks{flex-wrap:wrap;justify-content:center;}
       .phone img{height:240px;}.tab-row{flex-wrap:wrap;}
+      .mob-nav{display:flex;}
     }
     @media(prefers-reduced-motion:reduce){
       *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important;}
@@ -518,9 +549,21 @@
         <a href="https://github.com/voidcraft-dev/termcanvas-site" target="_blank">GitHub</a>
         <a href="https://revkster.gumroad.com/l/termcanvas" target="_blank" class="nbuy">Buy — $19</a>
       </div>
+      <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile nav overlay -->
+<div class="mob-nav" id="mob-nav" aria-hidden="true">
+  <a href="#features" class="mob-link">Features</a>
+  <a href="#how-it-works" class="mob-link">How it works</a>
+  <a href="#pricing" class="mob-link">Pricing</a>
+  <a href="https://github.com/voidcraft-dev/termcanvas-site" target="_blank" class="mob-link">GitHub</a>
+  <a href="https://revkster.gumroad.com/l/termcanvas" target="_blank" class="nbuy">Buy — $19</a>
+</div>
 
 <!-- ━━━ HERO ━━━ -->
 <section class="hero">
@@ -547,7 +590,7 @@
       <span class="ftitle">TermCanvas — canvas workspace</span>
       <span style="width:40px"></span>
     </div>
-    <img src="img/hero.png" alt="TermCanvas canvas terminal workspace" loading="eager">
+    <img src="img/hero.png" alt="TermCanvas canvas terminal workspace" loading="eager" width="1643" height="1046">
   </div>
 </div>
 
@@ -688,7 +731,7 @@
   <div class="hd rv" style="margin-bottom:32px;"><div class="tag">Setup</div><h2>One scan to connect</h2><p>Enable remote access in settings, scan the QR code, done.</p></div>
   <div class="shot-frame rv" style="max-width:820px;margin:0 auto;">
     <div class="fbar"><span class="fd r"></span><span class="fd y"></span><span class="fd g"></span><span class="ftitle">Settings — Remote Access</span><span style="width:40px"></span></div>
-    <img src="img/settings-remote.png" alt="TermCanvas settings — remote access with QR code" loading="lazy">
+    <img src="img/settings-remote.png" alt="TermCanvas settings — remote access with QR code" loading="lazy" width="1643" height="1046">
   </div>
 </section>
 
@@ -706,8 +749,8 @@
     <div class="hl-v">
       <div class="hl-v-glass"></div>
       <div class="phone-row">
-        <div class="phone"><img src="img/mobile-list.png" alt="TermCanvas mobile — session list" loading="lazy"></div>
-        <div class="phone"><img src="img/mobile-detail.png" alt="TermCanvas mobile — terminal" loading="lazy"></div>
+        <div class="phone"><img src="img/mobile-list.png" alt="TermCanvas mobile — session list" loading="lazy" width="375" height="667"></div>
+        <div class="phone"><img src="img/mobile-detail.png" alt="TermCanvas mobile — terminal" loading="lazy" width="375" height="667"></div>
       </div>
     </div>
   </div>
@@ -819,19 +862,52 @@
 (function(){
   var cur  = document.getElementById('cur');
   var ring = document.getElementById('cur-ring');
-  var rx = 0, ry = 0; // ring lags slightly
+  var tx = 0, ty = 0; // target (mouse position)
+  var rx = 0, ry = 0; // ring current (lags behind)
+  var rafId = null;
   window.addEventListener('mousemove', function(e){
     cur.style.left = e.clientX + 'px';
     cur.style.top  = e.clientY + 'px';
-    // Ring follows with lerp via rAF
-    rx += (e.clientX - rx) * 0.18;
-    ry += (e.clientY - ry) * 0.18;
-    ring.style.left = e.clientX + 'px';
-    ring.style.top  = e.clientY + 'px';
+    tx = e.clientX; ty = e.clientY;
+    if(!rafId) rafId = requestAnimationFrame(lerpRing);
   }, {passive:true});
-  // Shrink ring on press
+  function lerpRing(){
+    rx += (tx - rx) * 0.18;
+    ry += (ty - ry) * 0.18;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    if(Math.abs(tx - rx) > 0.5 || Math.abs(ty - ry) > 0.5){
+      rafId = requestAnimationFrame(lerpRing);
+    } else {
+      rafId = null;
+    }
+  }
   window.addEventListener('mousedown', function(){ ring.style.width='22px'; ring.style.height='22px'; });
   window.addEventListener('mouseup',   function(){ ring.style.width=''; ring.style.height=''; });
+})();
+
+// Hamburger menu
+(function(){
+  var ham = document.getElementById('ham');
+  var mob = document.getElementById('mob-nav');
+  if(!ham || !mob) return;
+  function toggle(){
+    var open = ham.classList.toggle('open');
+    ham.setAttribute('aria-expanded', open);
+    mob.classList.toggle('open', open);
+    mob.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  ham.addEventListener('click', toggle);
+  mob.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      ham.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+      mob.classList.remove('open');
+      mob.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
 })();
 
 // Scroll progress + nav
